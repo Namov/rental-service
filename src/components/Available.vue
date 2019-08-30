@@ -72,32 +72,32 @@
         <template slot-scope="scope">
           <el-button
             size="mini"
-            @click="openEdit(scope.$index, scope.row)">Edit</el-button>
+            @click="openEdit(scope.$index, scope.row)">编辑</el-button>
           <el-button
             size="mini"
             type="danger"
-            @click="handleDelete(scope.$index, scope.row)">Delete</el-button>
+            @click="handleDelete(scope.$index, scope.row)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
     <el-dialog title="新增房源" :visible.sync="dialogAddVisible">
       <el-form :model="form">
         <el-form-item label="房间类型" :label-width="formLabelWidth" prop = "type">
-          <el-select v-model="form.type" placeholder="房间类型">
+          <el-select v-model="form.type" placeholder="房间类型" style="width: 100%">
             <el-option label="单人间" value="单人间"></el-option>
             <el-option label="双人间" value="双人间"></el-option>
             <el-option label="四人间" value="四人间"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="出租类型" :label-width="formLabelWidth" prop = "rentType">
-          <el-select v-model="form.rentType" placeholder="出租类型">
+          <el-select v-model="form.rentType" placeholder="出租类型" style="width: 100%">
             <el-option label="只能长租" :value=2004></el-option>
             <el-option label="只能短租" :value=2005></el-option>
             <el-option label="长租短租都可以" :value=2006></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="房间状态" :label-width="formLabelWidth" prop = "state">
-          <el-select v-model="form.state" placeholder="房间状态">
+          <el-select v-model="form.state" placeholder="房间状态" style="width: 100%">
             <el-option label="可出租" :value=2002></el-option>
             <el-option label="不可出租" :value=2001></el-option>
           </el-select>
@@ -139,21 +139,21 @@
     <el-dialog title="修改房源信息" :visible.sync="dialogEditVisible">
       <el-form :model="form">
         <el-form-item label="房间类型" :label-width="formLabelWidth" prop = "type">
-          <el-select v-model="form.type" placeholder="房间类型">
+          <el-select v-model="form.type" placeholder="房间类型" style="width: 100%">
             <el-option label="单人间" value="单人间"></el-option>
             <el-option label="双人间" value="双人间"></el-option>
             <el-option label="四人间" value="四人间"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="出租类型" :label-width="formLabelWidth" prop = "rentType">
-          <el-select v-model="form.rentType" placeholder="出租类型">
+          <el-select v-model="form.rentType" placeholder="出租类型" style="width: 100%">
             <el-option label="只能长租" :value=2004></el-option>
             <el-option label="只能短租" :value=2005></el-option>
             <el-option label="长租短租都可以" :value=2006></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="房间状态" :label-width="formLabelWidth" prop = "state">
-          <el-select v-model="form.state" placeholder="房间状态">
+          <el-select v-model="form.state" placeholder="房间状态" style="width: 100%">
             <el-option label="可出租" :value=2002></el-option>
             <el-option label="不可出租" :value=2001></el-option>
           </el-select>
@@ -248,7 +248,6 @@ export default {
     },
     handleSubmit () {
       this.$axios.post('/api/room/add', this.form, {withCredentials: true}).then(res => {
-        this.getRooms()
         alert('提交成功')
         this.dialogAddVisible = false
         this.dialogEditVisible = false
