@@ -81,7 +81,7 @@
       </el-table-column>
     </el-table>
     <el-dialog title="新增房源" :visible.sync="dialogAddVisible">
-      <el-form :model="form">
+      <el-form :model="form" enctype="multipart/form-data">
         <el-form-item label="房间类型" :label-width="formLabelWidth" prop = "type">
           <el-select v-model="form.type" placeholder="房间类型" style="width: 600px;">
             <el-option label="单人间" value="单人间"></el-option>
@@ -122,8 +122,6 @@
             list-type="picture-card"
             :http-request="uploadImgs"
             action="/api/file/uploadImage"
-            :file="file"
-            :file-list="fileList"
             :on-preview="handlePictureCardPreview"
             :on-remove="handleRemove">
             <i class="el-icon-plus"></i>
@@ -203,7 +201,6 @@ export default {
       },
       formLabelWidth: '120px',
       search: '',
-      fileList: [],
       text: '',
       username: '',
       urls: [
@@ -218,6 +215,21 @@ export default {
     this.getRooms()
   },
   methods: {
+      uploadImgs (img) {
+          let param = new FormData()
+          param.append('file', img.file)
+          this.$axios({
+              method: 'post',
+              url: '/api/file/uploadImage',
+              headers: {
+                  'Content-Type': 'multipart/form-data'
+              },
+              data: param,
+              withCredentials: true
+          }).then(res => {
+              this.form.imageUrls.push(res.data)
+          })
+      },
     openAddDialog () {
       this.form.reset()
       this.dialogAddVisible = true
@@ -248,28 +260,6 @@ export default {
         this.dialogEditVisible = false
       })
     },
-    uploadImgs (file) {
-      let param = new FormData()
-      param.append('file', file.file)
-      this.$axios({
-        method: 'post',
-        url: '/api/file/uploadImage',
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        },
-        data: param,
-        withCredentials: true
-      }).then(res => {
-        this.form.imageUrls.push(res.data)
-      })
-    },
-    handleRemove (file, fileList) {
-      console.log(file, fileList)
-    },
-    handlePictureCardPreview (file) {
-      this.dialogImageUrl = file.url
-      this.dialogVisible = true
-    },
     clearFilter() {
       this.$refs.filterTable.clearFilter();
     },
@@ -285,7 +275,14 @@ export default {
     },
     filterType(value, row) {
       return row.rentType === value;
-    }
+    },
+      handleRemove (file, fileList) {
+          console.log(file, fileList)
+      },
+      handlePictureCardPreview (file) {
+          this.dialogImageUrl = file.url
+          this.dialogVisible = true
+      }
   }
 }
 </script>
