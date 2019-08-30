@@ -3,7 +3,6 @@ import Router from 'vue-router'
 import Service from '@/views/service/service.vue'
 import ArrangeMaster from '@/components/ArrangeMaster.vue'
 import Available from '@/components/Available.vue'
-import Unavailable from '@/components/Unavailable.vue'
 import ManageTenant from '@/components/ManageTenant.vue'
 import ManageContract from '@/components/ManageContract.vue'
 import ReplyComplaint from '@/components/ReplyComplaint.vue'
@@ -31,11 +30,6 @@ export default new Router({
           path: '/available',
           name: 'Available',
           component: Available
-        },
-        {
-          path: '/unavailable',
-          name: 'Unavailable',
-          component: Unavailable
         },
         {
           path: '/manageTenant',
