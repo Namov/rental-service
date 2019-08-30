@@ -122,8 +122,6 @@
             list-type="picture-card"
             :http-request="uploadImgs"
             action="/api/file/uploadImage"
-            :file="file"
-            :file-list="fileList"
             :on-preview="handlePictureCardPreview"
             :on-remove="handleRemove">
             <i class="el-icon-plus"></i>
@@ -201,7 +199,6 @@ export default {
       },
       formLabelWidth: '120px',
       search: '',
-      fileList: [],
       text: '',
       username: '',
       urls: [],

@@ -24,10 +24,26 @@
             <i class="el-icon-s-order"></i>
             <span>管理订单</span>
           </template>
-          <el-menu-item-group>
-            <el-menu-item index="5-1" v-on:click="showProcessed">已处理</el-menu-item>
-            <el-menu-item index="5-2" v-on:click="showUnprocessed">待处理</el-menu-item>
-          </el-menu-item-group>
+          <el-submenu index="5-1">
+            <template slot="title">
+              <i class="el-icon-s-order"></i>
+              <span>短租订单</span>
+            </template>
+            <el-menu-item-group>
+              <el-menu-item index="5-1-1" v-on:click="showUnprocessedShort">待处理</el-menu-item>
+              <el-menu-item index="5-1-2" v-on:click="showProcessedShort">已处理</el-menu-item>
+            </el-menu-item-group>
+          </el-submenu>
+          <el-submenu index="5-2">
+            <template slot="title">
+              <i class="el-icon-s-order"></i>
+              <span>长租订单</span>
+            </template>
+            <el-menu-item-group>
+              <el-menu-item index="5-2-1" v-on:click="showUnprocessedLong">待处理</el-menu-item>
+              <el-menu-item index="5-2-2" v-on:click="showProcessedLong">已处理</el-menu-item>
+            </el-menu-item-group>
+          </el-submenu>
         </el-submenu>
         <el-submenu index="4">
           <template slot="title">
@@ -84,11 +100,17 @@ export default {
     showReplyComplaint () {
       this.$router.push('/replyComplaint')
     },
-    showProcessed () {
-      this.$router.push('/processed')
+    showProcessedLong () {
+      this.$router.push('/processedLong')
     },
-    showUnprocessed () {
-      this.$router.push('/unprocessed')
+    showUnprocessedLong () {
+      this.$router.push('/unprocessedLong')
+    },
+    showProcessedShort () {
+        this.$router.push('/processedShort')
+    },
+    showUnprocessedShort () {
+        this.$router.push('/unprocessedShort')
     }
   }
 }
