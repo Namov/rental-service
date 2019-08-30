@@ -2,7 +2,7 @@
   <div>
     <h2 style="padding-left: 10px; text-align: left">管理房源</h2>
     <h2 style="padding-left: 10px; text-align: left">
-      <el-button @click="dialogAddVisible = true">新增房源</el-button>
+      <el-button @click="openAddDialog">新增房源</el-button>
       <el-button @click="clearFilter">清除所有过滤器</el-button>
     </h2>
     <el-table
@@ -83,23 +83,23 @@
     <el-dialog title="新增房源" :visible.sync="dialogAddVisible">
       <el-form :model="form">
         <el-form-item label="房间类型" :label-width="formLabelWidth" prop = "type">
-          <el-select v-model="form.type" placeholder="房间类型" style="width: 600px;">
+          <el-select v-model="form.type" placeholder="房间类型">
             <el-option label="单人间" value="单人间"></el-option>
             <el-option label="双人间" value="双人间"></el-option>
             <el-option label="四人间" value="四人间"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="出租类型" :label-width="formLabelWidth" prop = "rentType">
-          <el-select v-model="form.rentType" placeholder="出租类型" style="width: 600px;">
-            <el-option label="只能长租" value=2004></el-option>
-            <el-option label="只能短租" value=2005></el-option>
-            <el-option label="长租短租都可以" value=2006></el-option>
+          <el-select v-model="form.rentType" placeholder="出租类型">
+            <el-option label="只能长租" :value=2004></el-option>
+            <el-option label="只能短租" :value=2005></el-option>
+            <el-option label="长租短租都可以" :value=2006></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="房间状态" :label-width="formLabelWidth" prop = "state">
-          <el-select v-model="form.state" placeholder="房间状态" style="width: 600px;">
-            <el-option label="可出租" value=2002></el-option>
-            <el-option label="不可出租" value=2001></el-option>
+          <el-select v-model="form.state" placeholder="房间状态">
+            <el-option label="可出租" :value=2002></el-option>
+            <el-option label="不可出租" :value=2001></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="地址" :label-width="formLabelWidth" prop = "address">
@@ -141,23 +141,23 @@
     <el-dialog title="修改房源信息" :visible.sync="dialogEditVisible">
       <el-form :model="form">
         <el-form-item label="房间类型" :label-width="formLabelWidth" prop = "type">
-          <el-select v-model="form.type" placeholder="房间类型" style="width: 600px;">
+          <el-select v-model="form.type" placeholder="房间类型">
             <el-option label="单人间" value="单人间"></el-option>
             <el-option label="双人间" value="双人间"></el-option>
             <el-option label="四人间" value="四人间"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="出租类型" :label-width="formLabelWidth" prop = "rentType">
-          <el-select v-model="form.rentType" placeholder="出租类型" style="width: 600px;">
-            <el-option label="只能长租" value=2004></el-option>
-            <el-option label="只能短租" value=2005></el-option>
-            <el-option label="长租短租都可以" value=2006></el-option>
+          <el-select v-model="form.rentType" placeholder="出租类型">
+            <el-option label="只能长租" :value=2004></el-option>
+            <el-option label="只能短租" :value=2005></el-option>
+            <el-option label="长租短租都可以" :value=2006></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="房间状态" :label-width="formLabelWidth" prop = "state">
-          <el-select v-model="form.state" placeholder="房间状态" style="width: 600px;">
-            <el-option label="可出租" value=2002></el-option>
-            <el-option label="不可出租" value=2001></el-option>
+          <el-select v-model="form.state" placeholder="房间状态">
+            <el-option label="可出租" :value=2002></el-option>
+            <el-option label="不可出租" :value=2001></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="地址" :label-width="formLabelWidth" prop = "address">
@@ -190,12 +190,10 @@ export default {
       dialogAddVisible: false,
       dialogEditVisible: false,
       form: {
-        roomId: '',
         type: '',
         address: '',
         priceForDay: '',
         priceForMonth: '',
-        file: null,
         area: '',
         state: '',
         rentType: '',
@@ -206,10 +204,7 @@ export default {
       fileList: [],
       text: '',
       username: '',
-      urls: [
-        'http://icon.nipic.com/BannerPic/20160426/photo/20160426160807.jpg',
-        'http://icon.nipic.com/BannerPic/20160426/photo/20160426160826.jpg'
-      ],
+      urls: [],
       dialogImageUrl: '',
       dialogVisible: false
     }
@@ -219,7 +214,7 @@ export default {
   },
   methods: {
     openAddDialog () {
-      this.form.reset()
+      this.formReset()
       this.dialogAddVisible = true
     },
     openEdit (index, row) {
@@ -227,12 +222,27 @@ export default {
       this.dialogEditVisible = true
     },
     handleDelete (index, row) {
-      let params = new URLSearchParams()
-      params.append('id', row.roomId)
-      this.$axios.post('/api/room/removeById', params).then(res => {
-        alert('删除成功')
-        this.getRooms()
-      })
+      this.$confirm('此操作将永久删除该信息, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        let params = new URLSearchParams()
+        params.append('id', row.roomId)
+        this.$axios.post('/api/room/removeById', params).then(res => {
+          this.getRooms()
+        })
+        this.$message({
+          type: 'success',
+          message: '删除成功!'
+        });
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        });
+      });
+
     },
     getRooms () {
       this.$axios.get('/api/room/findAll', {withCredentials: true}).then(res => {
@@ -240,12 +250,12 @@ export default {
       })
     },
     handleSubmit () {
-      console.log(this.form)
       this.$axios.post('/api/room/add', this.form, {withCredentials: true}).then(res => {
         this.getRooms()
         alert('提交成功')
         this.dialogAddVisible = false
         this.dialogEditVisible = false
+        this.getRooms()
       })
     },
     uploadImgs (file) {
@@ -285,6 +295,18 @@ export default {
     },
     filterType(value, row) {
       return row.rentType === value;
+    },
+    formReset() {
+      this.form = {
+        type: '',
+        address: '',
+        priceForDay: '',
+        priceForMonth: '',
+        area: '',
+        state: '',
+        rentType: '',
+        imageUrls: []
+      }
     }
   }
 }
