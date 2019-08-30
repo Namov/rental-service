@@ -1,16 +1,42 @@
 <template>
   <div>
     <h2 style="padding-left: 10px; text-align: left">管理租客</h2>
+
+    <el-dialog title="修改租客信息" :visible.sync="dialogEditVisible">
+      <el-form :model="form">
+        <el-form-item label="用户名" :label-width="formLabelWidth" prop = "username">
+          <el-input v-model="form.username" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="地址" :label-width="formLabelWidth" prop = "address">
+          <el-input v-model="form.address" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="手机号" :label-width="formLabelWidth" prop = "roomId">
+          <el-input v-model="form.phone" autocomplete="off"></el-input>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogEditVisible = false">取 消</el-button>
+        <el-button type="primary" @click="handleSubmit">确 定</el-button>
+      </div>
+    </el-dialog>
     <el-table
-      :data="tableData.filter(data => !search || data.name.toLowerCase().includes(search.toLowerCase()))"
+      :data="tableData.filter(data => !search || data.address.toLowerCase().includes(search.toLowerCase()))"
       style="width: 100%">
       <el-table-column
-        label="Date"
-        prop="date">
+        label="房间ID"
+        prop="roomId">
       </el-table-column>
       <el-table-column
-        label="Name"
-        prop="name">
+        label="地址"
+        prop="address">
+      </el-table-column>
+      <el-table-column
+        label="短租价格"
+        prop="priceForDay">
+      </el-table-column>
+      <el-table-column
+        label="房东"
+        prop="landLord.username">
       </el-table-column>
       <el-table-column
         align="right">
@@ -18,12 +44,12 @@
           <el-input
             v-model="search"
             size="mini"
-            placeholder="输入关键字搜索"/>
+            placeholder="输入地址搜索"/>
         </template>
         <template slot-scope="scope">
           <el-button
             size="mini"
-            @click="handleEdit(scope.$index, scope.row)">Edit</el-button>
+            @click="openEdit(scope.$index, scope.row)">Edit</el-button>
           <el-button
             size="mini"
             type="danger"
@@ -35,39 +61,60 @@
 </template>
 
 <script>
-export default {
-  name: 'ManageTenant',
-  data () {
-    return {
-      tableData: [{
-        date: '2016-05-02',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1518 弄'
-      }, {
-        date: '2016-05-04',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1517 弄'
-      }, {
-        date: '2016-05-01',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1519 弄'
-      }, {
-        date: '2016-05-03',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1516 弄'
-      }],
-      search: ''
-    }
-  },
-  methods: {
-    handleEdit (index, row) {
-      console.log(index, row)
+  export default {
+    name: 'Available',
+    data: function () {
+      return {
+        tableData: [],
+        dialogAddVisible: false,
+        dialogEditVisible: false,
+        form: {
+          address: '',
+          roomId: '',
+          type: ''
+        },
+        formLabelWidth: '120px',
+        search: ''
+      }
     },
-    handleDelete (index, row) {
-      console.log(index, row)
+    mounted: function () {
+      this.getRooms()
+    },
+    methods: {
+      openEdit (index, row) {
+        console.log(row.roomId)
+        this.form = row
+        console.log(this.form.roomId)
+        this.dialogEditVisible = true
+      },
+      handleDelete (index, row) {
+        console.log(row.roomId)
+        let params = new URLSearchParams()
+        params.append('id', row.roomId)
+        this.$axios.post('/api/room/removeById', params).then(res => {
+          console.log(res)
+          alert('yes')
+          this.getRooms()
+        })
+      },
+      getRooms () {
+        this.$axios.get('/api/room/findAll', {withCredentials: true}).then(res => {
+          this.tableData = res.data
+          console.log(res)
+        }, err => {
+          console.log(err)
+        })
+      },
+      handleSubmit () {
+        this.$axios.post('/api/room/add', this.form, {withCredentials: true}).then(res => {
+          this.getRooms()
+          alert('yes!')
+          this.dialogAddVisible = false
+          this.dialogEditVisible = false
+        })
+      }
     }
   }
-}
 </script>
 
 <style scoped>

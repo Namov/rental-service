@@ -64,38 +64,38 @@
 </style>
 
 <script>
-  export default {
-    methods: {
-      handleOpen (key, keyPath) {
-        console.log(key, keyPath)
-      },
-      handleClose (key, keyPath) {
-        console.log(key, keyPath)
-      },
-      showManageTenant () {
-        this.$router.push('/manageTenant')
-      },
-      showAvailable () {
-        this.$router.push('/available')
-      },
-      showUnavailable () {
-        this.$router.push('/unavailable')
-      },
-      showManageContract () {
-        this.$router.push('/manageContract')
-      },
-      showArrangeMaster () {
-        this.$router.push('/arrangeMaster')
-      },
-      showReplyComplaint () {
-        this.$router.push('/replyComplaint')
-      },
-      showProcessed () {
-        this.$router.push('/processed')
-      },
-      showUnprocessed () {
-        this.$router.push('/unprocessed')
-      }
+export default {
+  methods: {
+    handleOpen (key, keyPath) {
+      console.log(key, keyPath)
+    },
+    handleClose (key, keyPath) {
+      console.log(key, keyPath)
+    },
+    showManageTenant () {
+      this.$router.push('/manageTenant')
+    },
+    showAvailable () {
+      this.$router.push('/available')
+    },
+    showUnavailable () {
+      this.$router.push('/unavailable')
+    },
+    showManageContract () {
+      this.$router.push('/manageContract')
+    },
+    showArrangeMaster () {
+      this.$router.push('/arrangeMaster')
+    },
+    showReplyComplaint () {
+      this.$router.push('/replyComplaint')
+    },
+    showProcessed () {
+      this.$router.push('/processed')
+    },
+    showUnprocessed () {
+      this.$router.push('/unprocessed')
     }
   }
+}
 </script>

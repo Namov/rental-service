@@ -300,7 +300,7 @@ export default {
   mounted () {
     this.username = getCookie('username')
     // var self = this
-    // this.$axios.get('http://localhost:8081/room/findAll', {withCredentials: true}).then(function (res) {
+    // this.$axios.get('/api/room/findAll', {withCredentials: true}).then(function (res) {
     //   console.log(res.data)
     //   self.rooms = res.data
     //   self.count = res.data.length
@@ -335,7 +335,7 @@ export default {
     findShortRent () {
       var self = this
       var data = {'rentType': '2005'}
-      this.$axios.post('http://localhost:8081/room/findByRentType', data, {withCredentials: true}).then(function (res) { //, {withCredentials: true}
+      this.$axios.post('/api/room/findByRentType', data, {withCredentials: true}).then(function (res) { //, {withCredentials: true}
         console.log(res.data)
         self.rooms = res.data
         self.count = res.data.length
@@ -344,7 +344,7 @@ export default {
     findLongRent () {
       var self = this
       var data = {'rentType': '2004'}
-      this.$axios.post('http://localhost:8081/room/findByRentType', data, {withCredentials: true}).then(function (res) { //, {withCredentials: true}
+      this.$axios.post('/api/room/findByRentType', data, {withCredentials: true}).then(function (res) { //, {withCredentials: true}
         console.log(res.data)
         self.rooms = res.data
         self.count = res.data.length
@@ -363,7 +363,7 @@ export default {
       order.leaveDay = this.dates[1]
       order.room = this.rent_room
       console.log(order)
-      this.$axios.post('http://localhost:8081/shortRentEnroll', order)
+      this.$axios.post('/api/shortRentEnroll', order)
       alert('订单提交成功，请等待审核')
     },
     commitLongRent () {
@@ -380,7 +380,7 @@ export default {
       order.room = this.rent_room
       console.log(order)
       var data = {'longRentOrder': order, 'months': this.month_num}
-      this.$axios.post('http://localhost:8081/longRentEnroll', data)
+      this.$axios.post('/api/longRentEnroll', data)
       alert('订单提交成功，请等待审核')
     },
     load () {

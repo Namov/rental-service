@@ -11,7 +11,13 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
-
+      '/api': {//前端路由匹配模式
+        target: 'http://localhost:8081',  //后端请求服务域名和端口
+        changeOrigin: true,   //设置请求头
+        // pathRewrite: {
+        //   '^/api': '/'   //路径重写  前端/api 对应 后端/
+        // }
+      }
     },
 
     // Various Dev Server settings

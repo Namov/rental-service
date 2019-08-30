@@ -40,57 +40,57 @@
 </template>
 
 <script>
-  export default {
-    name: 'ManageTenant',
-    data () {
-      return {
-        tableData: [{
-          date: '2016-05-02',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1518 弄'
-        }, {
-          date: '2016-05-04',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1517 弄'
-        }, {
-          date: '2016-05-01',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1519 弄'
-        }, {
-          date: '2016-05-03',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1516 弄'
-        }],
-        search: ''
-      }
+export default {
+  name: 'ManageTenant',
+  data () {
+    return {
+      tableData: [{
+        date: '2016-05-02',
+        name: '王小虎',
+        address: '上海市普陀区金沙江路 1518 弄'
+      }, {
+        date: '2016-05-04',
+        name: '王小虎',
+        address: '上海市普陀区金沙江路 1517 弄'
+      }, {
+        date: '2016-05-01',
+        name: '王小虎',
+        address: '上海市普陀区金沙江路 1519 弄'
+      }, {
+        date: '2016-05-03',
+        name: '王小虎',
+        address: '上海市普陀区金沙江路 1516 弄'
+      }],
+      search: ''
+    }
+  },
+  methods: {
+    handleEdit (index, row) {
+      console.log(index, row)
     },
-    methods: {
-      handleEdit (index, row) {
-        console.log(index, row)
-      },
-      handleDelete (index, row) {
-        console.log(index, row)
-      },
-      open () {
-        this.$prompt('请输入房源信息', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          inputPattern: /[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?/,
-          inputErrorMessage: '邮箱格式不正确'
-        }).then(({ value }) => {
-          this.$message({
-            type: 'success',
-            message: '你的邮箱是: ' + value
-          })
-        }).catch(() => {
-          this.$message({
-            type: 'info',
-            message: '取消输入'
-          })
+    handleDelete (index, row) {
+      console.log(index, row)
+    },
+    open () {
+      this.$prompt('请输入房源信息', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        inputPattern: /[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?/,
+        inputErrorMessage: '邮箱格式不正确'
+      }).then(({ value }) => {
+        this.$message({
+          type: 'success',
+          message: '你的邮箱是: ' + value
         })
-      }
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '取消输入'
+        })
+      })
     }
   }
+}
 </script>
 
 <style scoped>

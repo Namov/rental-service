@@ -100,7 +100,7 @@ export default {
   },
   mounted () {
     // get total here
-    this.$axios.get('http://localhost:8081/getOrderTotal', {withCredentials: true}).then((res) => {
+    this.$axios.get('/api/getOrderTotal', {withCredentials: true}).then((res) => {
       this.total = res
     })
     this.total = 27
