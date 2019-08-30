@@ -24,7 +24,6 @@
 </style>
 
 <script>
-import {getCookie, delCookie} from '../assets/js/cookie.js'
 
 export default {
   data () {
@@ -34,17 +33,13 @@ export default {
     }
   },
   mounted () {
-    this.name = getCookie('username')
-    if (this.name === '') {
       this.$router.push('/')
-    }
   },
   methods: {
     handleSelect (key, keyPath) {
       console.log(key, keyPath)
     },
     quit () {
-      delCookie('username')
       this.$router.push('/')
     },
     showProfile () {

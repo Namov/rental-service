@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2 style="padding-left: 10px; text-align: left">已处理</h2>
+    <h2 style="padding-left: 10px; text-align: left">待处理</h2>
 
     <el-table
       :data="tableData.filter(data => !search || data.name.toLowerCase().includes(search.toLowerCase()))"
@@ -28,11 +28,11 @@
         <template slot-scope="scope">
           <el-button
             size="mini"
-            @click="handleEdit(scope.$index, scope.row)">Edit</el-button>
+            @click="handleEdit(scope.$index, scope.row)">通过</el-button>
           <el-button
             size="mini"
             type="danger"
-            @click="handleDelete(scope.$index, scope.row)">Delete</el-button>
+            @click="handleDelete(scope.$index, scope.row)">拒绝</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -41,7 +41,7 @@
 
 <script>
 export default {
-  name: 'ManageTenant',
+  name: 'UnprocessedLong',
   data () {
     return {
       tableData: [{
