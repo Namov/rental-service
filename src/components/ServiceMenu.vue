@@ -11,16 +11,10 @@
           <i class="el-icon-user"></i>
           <span slot="title">管理租客</span>
         </el-menu-item>
-        <el-submenu index="2">
-          <template slot="title">
-            <i class="el-icon-house"></i>
-            <span>管理房间</span>
-          </template>
-          <el-menu-item-group>
-            <el-menu-item index="2-1" v-on:click="showAvailable">可用房源</el-menu-item>
-            <el-menu-item index="2-2" v-on:click="showUnavailable">暂停出租房源</el-menu-item>
-          </el-menu-item-group>
-        </el-submenu>
+        <el-menu-item index="2" v-on:click="showAvailable">
+          <i class="el-icon-house"></i>
+          <span slot="title">管理房源</span>
+        </el-menu-item>
         <el-menu-item index="3" v-on:click="showManageContract">
           <i class="el-icon-files"></i>
           <span slot="title">管理合同</span>
