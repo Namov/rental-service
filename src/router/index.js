@@ -29,8 +29,8 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'Login',
-      component: Login
+      name: 'service',
+      component: Service
     },
     {
       path: '/register',
