@@ -5,105 +5,6 @@
       <el-button @click="dialogAddVisible = true">新增房源</el-button>
       <el-button @click="clearFilter">清除所有过滤器</el-button>
     </h2>
-
-    <el-dialog title="新增房源" :visible.sync="dialogAddVisible">
-      <el-form :model="form">
-        <el-form-item label="房间类型" :label-width="formLabelWidth" prop = "type">
-          <el-select v-model="form.type" placeholder="房间类型" style="width: 600px;">
-            <el-option label="单人间" value="单人间"></el-option>
-            <el-option label="双人间" value="双人间"></el-option>
-            <el-option label="四人间" value="四人间"></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="出租类型" :label-width="formLabelWidth" prop = "rentType">
-          <el-select v-model="form.rentType" placeholder="出租类型" style="width: 600px;">
-            <el-option label="只能长租" value=2004></el-option>
-            <el-option label="只能短租" value=2005></el-option>
-            <el-option label="长租短租都可以" value=2006></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="房间状态" :label-width="formLabelWidth" prop = "state">
-          <el-select v-model="form.state" placeholder="房间状态" style="width: 600px;">
-            <el-option label="可出租" value=2002></el-option>
-            <el-option label="不可出租" value=2001></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="地址" :label-width="formLabelWidth" prop = "address">
-          <el-input v-model="form.address" autocomplete="off"></el-input>
-        </el-form-item>
-        <el-form-item label="短租价格" :label-width="formLabelWidth" prop = "roomId">
-          <el-input v-model="form.priceForDay" autocomplete="off"></el-input>
-        </el-form-item>
-        <el-form-item label="长租价格" :label-width="formLabelWidth" prop = "roomId">
-          <el-input v-model="form.priceForMonth" autocomplete="off"></el-input>
-        </el-form-item>
-        <el-form-item label="面积" :label-width="formLabelWidth" prop = "roomId">
-          <el-input v-model="form.area" autocomplete="off"></el-input>
-        </el-form-item>
-        <el-form-item label="上传图片" :label-width="formLabelWidth">
-          <br>
-          <!--        action="https://localhost:8081/file/uploadImages"-->
-          <el-upload
-            style="text-align: left"
-            list-type="picture-card"
-            :http-request="uploadImgs"
-            action="/api/file/uploadHouseImage"
-            :file="file"
-            :file-list="fileList"
-            :on-preview="handlePictureCardPreview"
-            :on-remove="handleRemove">
-            <i class="el-icon-plus"></i>
-          </el-upload>
-          <el-dialog :visible.sync="dialogVisible">
-            <img width="100%" :src="dialogImageUrl" alt="">
-          </el-dialog>
-        </el-form-item>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogAddVisible = false">取 消</el-button>
-        <el-button type="primary" @click="handleSubmit">确 定</el-button>
-      </div>
-    </el-dialog>
-    <el-dialog title="修改房源信息" :visible.sync="dialogEditVisible">
-      <el-form :model="form">
-        <el-form-item label="房间类型" :label-width="formLabelWidth" prop = "type">
-          <el-select v-model="form.type" placeholder="房间类型" style="width: 600px;">
-            <el-option label="单人间" value="单人间"></el-option>
-            <el-option label="双人间" value="双人间"></el-option>
-            <el-option label="四人间" value="四人间"></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="出租类型" :label-width="formLabelWidth" prop = "rentType">
-          <el-select v-model="form.rentType" placeholder="出租类型" style="width: 600px;">
-            <el-option label="只能长租" value=2004></el-option>
-            <el-option label="只能短租" value=2005></el-option>
-            <el-option label="长租短租都可以" value=2006></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="房间状态" :label-width="formLabelWidth" prop = "state">
-          <el-select v-model="form.state" placeholder="房间状态" style="width: 600px;">
-            <el-option label="可出租" value=2002></el-option>
-            <el-option label="不可出租" value=2001></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="地址" :label-width="formLabelWidth" prop = "address">
-          <el-input v-model="form.address" autocomplete="off"></el-input>
-        </el-form-item>
-        <el-form-item label="短租价格" :label-width="formLabelWidth" prop = "roomId">
-          <el-input v-model="form.priceForDay" autocomplete="off"></el-input>
-        </el-form-item>
-        <el-form-item label="长租价格" :label-width="formLabelWidth" prop = "roomId">
-          <el-input v-model="form.priceForMonth" autocomplete="off"></el-input>
-        </el-form-item>
-        <el-form-item label="面积" :label-width="formLabelWidth" prop = "roomId">
-          <el-input v-model="form.area" autocomplete="off"></el-input>
-        </el-form-item>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogEditVisible = false">取 消</el-button>
-        <el-button type="primary" @click="handleSubmit">确 定</el-button>
-      </div>
-    </el-dialog>
     <el-table
       ref="filterTable"
       :data="tableData.filter(data => !search || data.address.toLowerCase().includes(search.toLowerCase()))"
@@ -179,6 +80,104 @@
         </template>
       </el-table-column>
     </el-table>
+    <el-dialog title="新增房源" :visible.sync="dialogAddVisible">
+      <el-form :model="form">
+        <el-form-item label="房间类型" :label-width="formLabelWidth" prop = "type">
+          <el-select v-model="form.type" placeholder="房间类型" style="width: 600px;">
+            <el-option label="单人间" value="单人间"></el-option>
+            <el-option label="双人间" value="双人间"></el-option>
+            <el-option label="四人间" value="四人间"></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="出租类型" :label-width="formLabelWidth" prop = "rentType">
+          <el-select v-model="form.rentType" placeholder="出租类型" style="width: 600px;">
+            <el-option label="只能长租" value=2004></el-option>
+            <el-option label="只能短租" value=2005></el-option>
+            <el-option label="长租短租都可以" value=2006></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="房间状态" :label-width="formLabelWidth" prop = "state">
+          <el-select v-model="form.state" placeholder="房间状态" style="width: 600px;">
+            <el-option label="可出租" value=2002></el-option>
+            <el-option label="不可出租" value=2001></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="地址" :label-width="formLabelWidth" prop = "address">
+          <el-input v-model="form.address" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="短租价格" :label-width="formLabelWidth" prop = "roomId">
+          <el-input v-model="form.priceForDay" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="长租价格" :label-width="formLabelWidth" prop = "roomId">
+          <el-input v-model="form.priceForMonth" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="面积" :label-width="formLabelWidth" prop = "roomId">
+          <el-input v-model="form.area" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="上传图片" :label-width="formLabelWidth">
+          <br>
+          <!--        action="https://localhost:8081/file/uploadImages"-->
+          <el-upload
+            style="text-align: left"
+            list-type="picture-card"
+            :http-request="uploadImgs"
+            action="/api/file/uploadImage"
+            :file="file"
+            :file-list="fileList"
+            :on-preview="handlePictureCardPreview"
+            :on-remove="handleRemove">
+            <i class="el-icon-plus"></i>
+          </el-upload>
+          <el-dialog :visible.sync="dialogVisible">
+            <img width="100%" :src="dialogImageUrl" alt="">
+          </el-dialog>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogAddVisible = false">取 消</el-button>
+        <el-button type="primary" @click="handleSubmit">确 定</el-button>
+      </div>
+    </el-dialog>
+    <el-dialog title="修改房源信息" :visible.sync="dialogEditVisible">
+      <el-form :model="form">
+        <el-form-item label="房间类型" :label-width="formLabelWidth" prop = "type">
+          <el-select v-model="form.type" placeholder="房间类型" style="width: 600px;">
+            <el-option label="单人间" value="单人间"></el-option>
+            <el-option label="双人间" value="双人间"></el-option>
+            <el-option label="四人间" value="四人间"></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="出租类型" :label-width="formLabelWidth" prop = "rentType">
+          <el-select v-model="form.rentType" placeholder="出租类型" style="width: 600px;">
+            <el-option label="只能长租" value=2004></el-option>
+            <el-option label="只能短租" value=2005></el-option>
+            <el-option label="长租短租都可以" value=2006></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="房间状态" :label-width="formLabelWidth" prop = "state">
+          <el-select v-model="form.state" placeholder="房间状态" style="width: 600px;">
+            <el-option label="可出租" value=2002></el-option>
+            <el-option label="不可出租" value=2001></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="地址" :label-width="formLabelWidth" prop = "address">
+          <el-input v-model="form.address" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="短租价格" :label-width="formLabelWidth" prop = "roomId">
+          <el-input v-model="form.priceForDay" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="长租价格" :label-width="formLabelWidth" prop = "roomId">
+          <el-input v-model="form.priceForMonth" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="面积" :label-width="formLabelWidth" prop = "roomId">
+          <el-input v-model="form.area" autocomplete="off"></el-input>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogEditVisible = false">取 消</el-button>
+        <el-button type="primary" @click="handleSubmit">确 定</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -196,9 +195,11 @@ export default {
         address: '',
         priceForDay: '',
         priceForMonth: '',
+        file: null,
         area: '',
         state: '',
-        rentType: ''
+        rentType: '',
+        imageUrls: []
       },
       formLabelWidth: '120px',
       search: '',
@@ -217,6 +218,10 @@ export default {
     this.getRooms()
   },
   methods: {
+    openAddDialog () {
+      this.form.reset()
+      this.dialogAddVisible = true
+    },
     openEdit (index, row) {
       this.form = row
       this.dialogEditVisible = true
@@ -245,17 +250,17 @@ export default {
     },
     uploadImgs (file) {
       let param = new FormData()
-      param.append('image', file.imageUrls)
+      param.append('file', file.file)
       this.$axios({
         method: 'post',
-        url: '/api/file/uploadHouseImage',
+        url: '/api/file/uploadImage',
         headers: {
           'Content-Type': 'multipart/form-data'
         },
         data: param,
         withCredentials: true
       }).then(res => {
-        this.form.urls.push(res.data)
+        this.form.imageUrls.push(res.data)
       })
     },
     handleRemove (file, fileList) {
