@@ -1,12 +1,32 @@
 <template>
   <div>
     <h2 style="padding-left: 10px; text-align: left">可用房源</h2>
-    <h2 style="padding-left: 10px; text-align: left"><el-button @click="dialogAddVisible = true">新增房源</el-button></h2>
+    <h2 style="padding-left: 10px; text-align: left">
+      <el-button @click="dialogAddVisible = true">新增房源</el-button>
+      <el-button @click="clearFilter">清除所有过滤器</el-button>
+    </h2>
 
     <el-dialog title="新增房源" :visible.sync="dialogAddVisible">
       <el-form :model="form">
-        <el-form-item label="类型" :label-width="formLabelWidth" prop = "type">
-          <el-input v-model="form.type" autocomplete="off"></el-input>
+        <el-form-item label="房间类型" :label-width="formLabelWidth" prop = "type">
+          <el-select v-model="form.type" placeholder="房间类型">
+            <el-option label="单人间" value="单人间"></el-option>
+            <el-option label="双人间" value="双人间"></el-option>
+            <el-option label="四人间" value="四人间"></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="出租类型" :label-width="formLabelWidth" prop = "rentType">
+          <el-select v-model="form.rentType" placeholder="出租类型">
+            <el-option label="只能长租" value=2004></el-option>
+            <el-option label="只能短租" value=2005></el-option>
+            <el-option label="长租短租都可以" value=2006></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="房间状态" :label-width="formLabelWidth" prop = "state">
+          <el-select v-model="form.state" placeholder="房间状态">
+            <el-option label="可出租" value=2002></el-option>
+            <el-option label="不可出租" value=2001></el-option>
+          </el-select>
         </el-form-item>
         <el-form-item label="地址" :label-width="formLabelWidth" prop = "address">
           <el-input v-model="form.address" autocomplete="off"></el-input>
@@ -46,11 +66,25 @@
     </el-dialog>
     <el-dialog title="修改房源信息" :visible.sync="dialogEditVisible">
       <el-form :model="form">
-        <el-form-item label="面积" :label-width="formLabelWidth" prop = "roomId">
-          <el-input v-model="form.area" autocomplete="off"></el-input>
+        <el-form-item label="房间类型" :label-width="formLabelWidth" prop = "type">
+          <el-select v-model="form.type" placeholder="房间类型">
+            <el-option label="单人间" value="单人间"></el-option>
+            <el-option label="双人间" value="双人间"></el-option>
+            <el-option label="四人间" value="四人间"></el-option>
+          </el-select>
         </el-form-item>
-        <el-form-item label="类型" :label-width="formLabelWidth" prop = "type">
-          <el-input v-model="form.type" autocomplete="off"></el-input>
+        <el-form-item label="出租类型" :label-width="formLabelWidth" prop = "rentType">
+          <el-select v-model="form.rentType" placeholder="出租类型">
+            <el-option label="只能长租" value=2004></el-option>
+            <el-option label="只能短租" value=2005></el-option>
+            <el-option label="长租短租都可以" value=2006></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="房间状态" :label-width="formLabelWidth" prop = "state">
+          <el-select v-model="form.state" placeholder="房间状态">
+            <el-option label="可出租" value=2002></el-option>
+            <el-option label="不可出租" value=2001></el-option>
+          </el-select>
         </el-form-item>
         <el-form-item label="地址" :label-width="formLabelWidth" prop = "address">
           <el-input v-model="form.address" autocomplete="off"></el-input>
@@ -71,6 +105,7 @@
       </div>
     </el-dialog>
     <el-table
+      ref="filterTable"
       :data="tableData.filter(data => !search || data.address.toLowerCase().includes(search.toLowerCase()))"
       style="width: 100%">
       <el-table-column
@@ -81,8 +116,22 @@
         </template>
       </el-table-column>
       <el-table-column
-        label="类型"
-        prop="type">
+        label="房间类型"
+        prop="type"
+        column-key="type"
+        :filters="[{text: '单人间', value: '单人间'}, {text: '双人间', value: '双人间'}, {text: '四人间', value: '四人间'}]"
+        :filter-method="filterHandler">
+      </el-table-column>
+      <el-table-column
+        label="出租类型"
+        prop="rentType"
+        :filters="[{text: '只能长租', value: 2004}, {text: '只能短租', value: 2005}, {text: '长租短租都可以', value: 2006}]"
+        :filter-method="filterType">
+        <template slot-scope="scope">
+          <span v-if="scope.row.rentType===2004">只能长租</span>
+          <span v-else-if="scope.row.rentType===2005">只能短租</span>
+          <span v-else>长租短租都可以</span>
+        </template>
       </el-table-column>
       <el-table-column
         label="地址"
@@ -99,6 +148,17 @@
       <el-table-column
         label="面积"
         prop="area">
+      </el-table-column>
+      <el-table-column
+        label="状态"
+        prop="state"
+        :filters="[{ text: '可出租', value: 2002 }, { text: '不可出租', value: 2001 }]"
+        :filter-method="filterTag"
+        filter-placement="bottom-end">
+        <template slot-scope="scope">
+          <i v-if="scope.row.state===2002"><el-tag type="success">可出租</el-tag></i>
+          <i v-else><el-tag type="danger">不可出租</el-tag></i>
+        </template>
       </el-table-column>
       <el-table-column
         align="right">
@@ -131,10 +191,14 @@ export default {
       dialogAddVisible: false,
       dialogEditVisible: false,
       form: {
-        address: '',
         roomId: '',
         type: '',
-        urls: ''
+        address: '',
+        priceForDay: '',
+        priceForMonth: '',
+        area: '',
+        state: '',
+        rentType: ''
       },
       formLabelWidth: '120px',
       search: '',
@@ -154,40 +218,34 @@ export default {
   },
   methods: {
     openEdit (index, row) {
-      console.log(row.roomId)
       this.form = row
-      console.log(this.form.roomId)
       this.dialogEditVisible = true
     },
     handleDelete (index, row) {
-      console.log(row.roomId)
       let params = new URLSearchParams()
       params.append('id', row.roomId)
       this.$axios.post('/api/room/removeById', params).then(res => {
-        console.log(res)
-        alert('yes')
+        alert('删除成功')
         this.getRooms()
       })
     },
     getRooms () {
       this.$axios.get('/api/room/findAll', {withCredentials: true}).then(res => {
         this.tableData = res.data
-        console.log(res)
-      }, err => {
-        console.log(err)
       })
     },
     handleSubmit () {
+      console.log(this.form)
       this.$axios.post('/api/room/add', this.form, {withCredentials: true}).then(res => {
         this.getRooms()
-        alert('yes!')
+        alert('提交成功')
         this.dialogAddVisible = false
         this.dialogEditVisible = false
       })
     },
     uploadImgs (file) {
       let param = new FormData()
-      param.append('image', file.file)
+      param.append('image', file.imageUrls)
       this.$axios({
         method: 'post',
         url: '/api/file/uploadHouseImage',
@@ -206,6 +264,22 @@ export default {
     handlePictureCardPreview (file) {
       this.dialogImageUrl = file.url
       this.dialogVisible = true
+    },
+    clearFilter() {
+      this.$refs.filterTable.clearFilter();
+    },
+    formatter(row, column) {
+      return row.address;
+    },
+    filterTag(value, row) {
+      return row.state === value;
+    },
+    filterHandler(value, row, column) {
+      const property = column['property'];
+      return row[property] === value;
+    },
+    filterType(value, row) {
+      return row.rentType === value;
     }
   }
 }

@@ -41,7 +41,7 @@
 
 <script>
 export default {
-  name: 'ManageTenant',
+  name: 'Unavailable',
   data () {
     return {
       tableData: [{
