@@ -11,8 +11,32 @@
         <el-form-item label="地址" :label-width="formLabelWidth" prop = "address">
           <el-input v-model="form.address" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="房间ID" :label-width="formLabelWidth" prop = "roomId">
-          <el-input v-model="form.roomId" autocomplete="off"></el-input>
+        <el-form-item label="短租价格" :label-width="formLabelWidth" prop = "roomId">
+          <el-input v-model="form.priceForDay" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="长租价格" :label-width="formLabelWidth" prop = "roomId">
+          <el-input v-model="form.priceForMonth" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="面积" :label-width="formLabelWidth" prop = "roomId">
+          <el-input v-model="form.area" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="上传图片" :label-width="formLabelWidth">
+          <br>
+          <!--        action="https://localhost:8081/file/uploadImages"-->
+          <el-upload
+            style="text-align: left"
+            list-type="picture-card"
+            :http-request="uploadImgs"
+            action="/api/file/uploadHouseImage"
+            :file="file"
+            :file-list="fileList"
+            :on-preview="handlePictureCardPreview"
+            :on-remove="handleRemove">
+            <i class="el-icon-plus"></i>
+          </el-upload>
+          <el-dialog :visible.sync="dialogVisible">
+            <img width="100%" :src="dialogImageUrl" alt="">
+          </el-dialog>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -22,14 +46,23 @@
     </el-dialog>
     <el-dialog title="修改房源信息" :visible.sync="dialogEditVisible">
       <el-form :model="form">
+        <el-form-item label="面积" :label-width="formLabelWidth" prop = "roomId">
+          <el-input v-model="form.area" autocomplete="off"></el-input>
+        </el-form-item>
         <el-form-item label="类型" :label-width="formLabelWidth" prop = "type">
           <el-input v-model="form.type" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item label="地址" :label-width="formLabelWidth" prop = "address">
           <el-input v-model="form.address" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="房间ID" :label-width="formLabelWidth" prop = "roomId">
-          <el-input v-model="form.roomId" autocomplete="off"></el-input>
+        <el-form-item label="短租价格" :label-width="formLabelWidth" prop = "roomId">
+          <el-input v-model="form.priceForDay" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="长租价格" :label-width="formLabelWidth" prop = "roomId">
+          <el-input v-model="form.priceForMonth" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="面积" :label-width="formLabelWidth" prop = "roomId">
+          <el-input v-model="form.area" autocomplete="off"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -41,8 +74,15 @@
       :data="tableData.filter(data => !search || data.address.toLowerCase().includes(search.toLowerCase()))"
       style="width: 100%">
       <el-table-column
-        label="房间ID"
-        prop="roomId">
+        label="图片"
+        prop="imageUrls">
+        <template slot-scope="scope">
+          <img  :src="scope.row.imageUrls" alt="" style="width: 100px;height: 100px">
+        </template>
+      </el-table-column>
+      <el-table-column
+        label="类型"
+        prop="type">
       </el-table-column>
       <el-table-column
         label="地址"
@@ -53,8 +93,12 @@
         prop="priceForDay">
       </el-table-column>
       <el-table-column
-        label="房东"
-        prop="landLord.username">
+        label="长租价格"
+        prop="priceForMonth">
+      </el-table-column>
+      <el-table-column
+        label="面积"
+        prop="area">
       </el-table-column>
       <el-table-column
         align="right">
@@ -89,10 +133,20 @@ export default {
       form: {
         address: '',
         roomId: '',
-        type: ''
+        type: '',
+        urls: ''
       },
       formLabelWidth: '120px',
-      search: ''
+      search: '',
+      fileList: [],
+      text: '',
+      username: '',
+      urls: [
+        'http://icon.nipic.com/BannerPic/20160426/photo/20160426160807.jpg',
+        'http://icon.nipic.com/BannerPic/20160426/photo/20160426160826.jpg'
+      ],
+      dialogImageUrl: '',
+      dialogVisible: false
     }
   },
   mounted: function () {
@@ -130,6 +184,28 @@ export default {
         this.dialogAddVisible = false
         this.dialogEditVisible = false
       })
+    },
+    uploadImgs (file) {
+      let param = new FormData()
+      param.append('image', file.file)
+      this.$axios({
+        method: 'post',
+        url: '/api/file/uploadHouseImage',
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        },
+        data: param,
+        withCredentials: true
+      }).then(res => {
+        this.form.urls.push(res.data)
+      })
+    },
+    handleRemove (file, fileList) {
+      console.log(file, fileList)
+    },
+    handlePictureCardPreview (file) {
+      this.dialogImageUrl = file.url
+      this.dialogVisible = true
     }
   }
 }
