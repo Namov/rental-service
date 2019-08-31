@@ -24,7 +24,7 @@
       </el-table-column>
       <el-table-column
         label="性别"
-        prop="isMale">
+        prop="male" >
         <template slot-scope="scope">
           <span v-if="scope.row.male===true">男</span>
           <span v-else>女</span>
