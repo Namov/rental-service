@@ -124,6 +124,7 @@
           <br>
           <!--        action="https://localhost:8081/file/uploadImages"-->
           <el-upload
+            ref="upload"
             style="text-align: left"
             list-type="picture-card"
             :http-request="uploadImgs"
@@ -257,6 +258,7 @@ export default {
         alert('提交成功')
         this.dialogAddVisible = false
         this.dialogEditVisible = false
+        this.$refs.upload.clearFiles()
         this.getRooms()
       })
     },
