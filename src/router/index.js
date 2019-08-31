@@ -10,6 +10,7 @@ import VueResource from 'vue-resource'
 import Unprocessed from '@/components/Unprocessed.vue'
 import Processed from '@/components/Processed.vue'
 import Detail from '@/views/detail/detail.vue'
+import Overdue from '@/components/Overdue.vue'
 Vue.use(Router)
 Vue.use(VueResource)
 
@@ -25,6 +26,11 @@ export default new Router({
           path: '/arrangeMaster',
           name: 'ArrangeMaster',
           component: ArrangeMaster
+        },
+        {
+          path: '/overdue',
+          name: 'Overdue',
+          component: Overdue
         },
         {
           path: '/available',

@@ -29,6 +29,10 @@
             <el-menu-item index="5-1-2" v-on:click="showProcessed">已处理</el-menu-item>
           </el-menu-item-group>
         </el-submenu>
+        <el-menu-item index="6" v-on:click="showOverdue">
+          <i class="el-icon-warning"></i>
+          <span slot="title">逾期订单</span>
+        </el-menu-item>
         <el-submenu index="4">
           <template slot="title">
             <i class="el-icon-setting"></i>
@@ -89,6 +93,9 @@ export default {
     },
     showUnprocessed () {
         this.$router.push('/unprocessed')
+    },
+    showOverdue () {
+      this.$router.push('/overdue')
     }
   }
 }
