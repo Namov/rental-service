@@ -6,14 +6,10 @@ import Available from '@/components/Available.vue'
 import ManageTenant from '@/components/ManageTenant.vue'
 import ManageContract from '@/components/ManageContract.vue'
 import ReplyComplaint from '@/components/ReplyComplaint.vue'
-import Processed from '@/components/ProcessedLong.vue'
-import Unprocessed from '@/components/UnprocessedLong.vue'
 import VueResource from 'vue-resource'
-import ProcessedLong from "../components/ProcessedLong"
-import ProcessedShort from "../components/ProcessedShort"
-import UnprocessedLong from "../components/UnprocessedLong"
-import UnprocessedShort from "../components/UnprocessedShort";
-
+import Unprocessed from '@/components/Unprocessed.vue'
+import Processed from '@/components/Processed.vue'
+import Detail from '@/views/detail/detail.vue'
 Vue.use(Router)
 Vue.use(VueResource)
 
@@ -51,26 +47,21 @@ export default new Router({
           component: ReplyComplaint
         },
         {
-          path: '/processedLong',
-          name: 'ProcessedLong',
-          component: ProcessedLong
+          path: '/processed',
+          name: 'Processed',
+          component: Processed
         },
         {
-          path: '/unprocessedLong',
-          name: 'UnprocessedLong',
-          component: UnprocessedLong
-        },
-        {
-          path: '/processedShort',
-          name: 'ProcessedShort',
-          component: ProcessedShort
-        },
-        {
-          path: '/unprocessedShort',
-          name: 'UnprocessedShort',
-          component: UnprocessedShort
+          path: '/unprocessed',
+          name: 'Unprocessed',
+          component: Unprocessed
         }
       ]
+    },
+    {
+      path: '/detail/:id',
+      name: 'Detail',
+      component: Detail
     }
   ]
 })
