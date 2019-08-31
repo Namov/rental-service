@@ -26,7 +26,7 @@
         label="性别"
         prop="isMale">
         <template slot-scope="scope">
-          <span v-if="scope.row.isMale===true">男</span>
+          <span v-if="scope.row.male===true">男</span>
           <span v-else>女</span>
         </template>
       </el-table-column>
@@ -60,7 +60,7 @@
           <el-input v-model="form.age" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item label="性别" :label-width="formLabelWidth" prop = "isMale">
-          <el-select v-model="form.isMale" placeholder="性别" style="width: 100%">
+          <el-select v-model="form.male" placeholder="性别" style="width: 100%">
             <el-option label="男" :value=true></el-option>
             <el-option label="女" :value=false></el-option>
           </el-select>
@@ -86,7 +86,7 @@
           password: '',
           phone: '',
           email: '',
-          isMale: '',
+          male: '',
           age: ''
         },
         formLabelWidth: '120px',
@@ -102,7 +102,6 @@
 
       openEdit (index, row) {
         this.form = row
-        console.log(row)
         this.dialogEditVisible = true
       },
       getTenants () {
@@ -124,7 +123,7 @@
           password: '',
           phone: '',
           email: '',
-          isMale: '',
+          male: '',
           age: ''
         }
       }
