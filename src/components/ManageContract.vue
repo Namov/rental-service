@@ -13,14 +13,14 @@
               <el-card :body-style="{ padding: '0px' }" shadow="hover">
                 <div class="label">
                   <div style="padding: 5px">
-                    <el-link :underline="false" style="font-size: 16px" :href=list.url target="_blank">与{{list.tenantName}}的合同</el-link>
-                    <time class="time">{{list.checkInDay}}至</time>
-                    <time class="time">{{list.leaveDay}}</time>
+                    <el-link :underline="false" style="font-size: 16px" >与{{list.tenantName}}的合同
+                    <br>
+                      <time class="time">{{list.checkInDay}}至{{list.leaveDay}}</time>
+                    </el-link>
                   </div>
                   <div class="buttongroup">
                     <el-button class="button" type="primary" @click="reject(list,lists,index)" :disabled=list.chargebuttondisabled>删除</el-button>
-                    <el-button class="button" type="primary"@click="view(list)">查看详情</el-button>
-                    <!--                    <el-button class="button" type="success" plain @click="charge(list.orderid)" :disabled=list.chargebuttondisabled>{{list.chargebutton}}</el-button>-->
+                    <el-button class="button" type="primary" @click="view(list.url)">查看详情</el-button>
                   </div>
                 </div>
               </el-card>
@@ -31,16 +31,6 @@
       <p v-if="loading" style="color: #2c3e50">加载中...</p>
       <p v-if="noMore" style="color: #2c3e50">没有更多了</p>
     </div>
-    <el-dialog title="订单详细信息" :visible.sync="viewDialogVisible" width="40%" style="text-align: left">
-      <p>房源：{{this.viewAddress}}</p>
-      <p>状态：{{this.viewStatus}}</p>
-      <p>类型：{{this.viewType}}</p>
-      <p>租客姓名：{{this.viewTenantName}}</p>
-      <p>入住时间：{{this.viewCheckInTime}}</p>
-      <p>到期时间：{{this.viewDueTime}}</p>
-      <p>下单时间：{{this.viewCreatedTime}}</p>
-      <p>订单号：{{this.viewOrderId}}</p>
-    </el-dialog>
   </div>
 </template>
 <style scoped>
@@ -148,23 +138,12 @@
                         this.loading = false}
                 }, 500)
             },
-            view(order) {
-                this.viewDialogVisible = true
-                this.viewAddress = order.address
-                this.viewStatus = order.status
-                this.viewType = order.roomtype + '  ' + order.renttype
-                this.viewCheckInTime = order.checkinday
-                this.viewDueTime = order.leaveday
-                this.viewCreatedTime = order.createdtime
-                this.viewOrderId = order.orderid
-                this.viewTenantName = order.tenantName
+            view(url) {
+                var newPage = window.open('about:blank')
+                newPage.location.href = (url)
             },
             reject(list,lists,index) {
-                var type = list.renttype
-                var state = list.state
-                var order = list.order
-                var data
-                    let id=order.id
+                    let id=list.id
                     this.$axios.post('/api/deleteLongRentOrder?id='+id)
                     alert('合同已删除')
                     lists.splice(index,1)
