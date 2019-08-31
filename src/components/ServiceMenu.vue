@@ -29,6 +29,10 @@
             <el-menu-item index="5-1-2" v-on:click="showProcessed">已处理</el-menu-item>
           </el-menu-item-group>
         </el-submenu>
+        <el-menu-item index="6" v-on:click="showOverdue">
+          <i class="el-icon-warning"></i>
+          <span slot="title">逾期订单</span>
+        </el-menu-item>
         <el-submenu index="4">
           <template slot="title">
             <i class="el-icon-setting"></i>
@@ -58,38 +62,41 @@
 </style>
 
 <script>
-export default {
-  methods: {
-    handleOpen (key, keyPath) {
-      console.log(key, keyPath)
-    },
-    handleClose (key, keyPath) {
-      console.log(key, keyPath)
-    },
-    showManageTenant () {
-      this.$router.push('/manageTenant')
-    },
-    showAvailable () {
-      this.$router.push('/available')
-    },
-    showUnavailable () {
-      this.$router.push('/unavailable')
-    },
-    showManageContract () {
-      this.$router.push('/manageContract')
-    },
-    showArrangeMaster () {
-      this.$router.push('/arrangeMaster')
-    },
-    showReplyComplaint () {
-      this.$router.push('/replyComplaint')
-    },
-    showProcessed () {
+  export default {
+    methods: {
+      handleOpen (key, keyPath) {
+        console.log(key, keyPath)
+      },
+      handleClose (key, keyPath) {
+        console.log(key, keyPath)
+      },
+      showManageTenant () {
+        this.$router.push('/manageTenant')
+      },
+      showAvailable () {
+        this.$router.push('/available')
+      },
+      showUnavailable () {
+        this.$router.push('/unavailable')
+      },
+      showManageContract () {
+        this.$router.push('/manageContract')
+      },
+      showArrangeMaster () {
+        this.$router.push('/arrangeMaster')
+      },
+      showReplyComplaint () {
+        this.$router.push('/replyComplaint')
+      },
+      showProcessed () {
         this.$router.push('/processed')
-    },
-    showUnprocessed () {
+      },
+      showUnprocessed () {
         this.$router.push('/unprocessed')
+      },
+      showOverdue () {
+        this.$router.push('/overdue')
+      }
     }
   }
-}
 </script>
