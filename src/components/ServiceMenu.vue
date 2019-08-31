@@ -1,6 +1,6 @@
 <template>
   <el-row class="tac" style="height: 100%">
-    <el-col :span="12">
+    <el-col :span="12" style="width: 100%;text-align: left;height: 100%">
       <el-menu
         default-active="1"
         class="el-menu-vertical-demo"
@@ -49,11 +49,6 @@
 </template>
 
 <style>
-  .el-col-12 {
-    width: 100%;
-    text-align: left;
-    height: 100%;
-  }
 
   html, body, .el-container, .el-menu-vertical-demo {
     height: 100%;

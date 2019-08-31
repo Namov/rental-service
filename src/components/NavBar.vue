@@ -8,17 +8,11 @@
   #header {
     float: left;
     color: #3399ff;
-    padding-left: 20px;
-    padding-right: 20px;
   }
 
   #name {
     float: right;
     width: auto;
-  }
-
-  .el-header {
-    padding: 0;
   }
 
 </style>
