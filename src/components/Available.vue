@@ -13,7 +13,13 @@
         label="图片"
         prop="imageUrls">
         <template slot-scope="scope">
-          <img  :src="scope.row.imageUrls" alt="" style="width: 100px;height: 100px">
+          <div class="demo-image__preview" v-for="url in scope.row.imageUrls" >
+            <el-image
+              style="width: 100px; height: 100px"
+              :src="url"
+              :preview-src-list="scope.row.imageUrls">
+            </el-image>
+          </div>
         </template>
       </el-table-column>
       <el-table-column
