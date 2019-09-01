@@ -20,12 +20,12 @@
       <el-form :model="newWorkorder">
         <el-form-item label="姓名" :label-width="formLabelWidth">
           <el-select v-model="newWorkorder.maintenanceName" placeholder="请选择">
-              <el-option
-                v-for="item in masters"
-                :key="item.id"
-                :label="item.username"
-                :value="item.username">
-              </el-option>
+            <el-option
+              v-for="item in masters"
+              :key="item.id"
+              :label.text="item.username+'  分数：'+item.ascore"
+              :value="item.username">
+            </el-option>
           </el-select>
         </el-form-item>
       </el-form>
@@ -87,64 +87,62 @@
 </template>
 
 <script>
-  import {getCookie} from '../assets/js/cookie.js'
-  export default {
-    name: 'Unresolve',
-    data () {
-      return {
-        text: '',
-        urls: [],
-        SdialogFormVisible: false,
-        AdialogFormVisible: false,
-        workorders: [],
-        masters: [],
-        newWorkorder: {
-          stats:6003,
-          message: '',
-          address: '',
-          tenantUsername: '',
-          maintenanceName: ''
+    import {getCookie} from '../assets/js/cookie.js'
+    export default {
+        name: 'Unresolve',
+        data () {
+            return {
+                text: '',
+                urls: [],
+                SdialogFormVisible: false,
+                AdialogFormVisible: false,
+                workorders: [],
+                masters: [],
+                newWorkorder: {
+                    stats:6003,
+                    message: '',
+                    address: '',
+                    tenantUsername: '',
+                    maintenanceName: ''
+                },
+                master: {
+                    username: '',
+                    phone: '',
+                    ascore:5.0,
+                    times:0.0
+                }
+            }
         },
-        master: {
-          username: '',
-          phone: '',
-          ascore:5.0,
-          times:0.0
+        mounted () {
+            var self = this
+            this.$axios.get('/api/workorder/getAllOrder').then((res) => {
+                self.workorders = res.data
+            })
+            this.$axios.get('/api/miantenanceman/getAll').then((res) => {
+                self.masters = res.data
+                console.log(self.masters)
+            })
+        },
+        methods: {
+            commitMaster () {
+                this.$axios.post('/api/maintenanceman', this.master)
+                this.SdialogFormVisible = false
+                alert("添加成功")
+            },
+            openArrange (workorder) {
+                this.AdialogFormVisible = true
+                this.newWorkorder = workorder
+            },
+            commitWorkorder () {
+                this.newWorkorder.stats = 6003
+                var i=this.newWorkorder
+                console.log(i)
+                this.$axios.post('/api/workorder/update', i)
+                this.SdialogFormVisible = false
+                this.AdialogFormVisible = false
+            }
         }
-      }
-    },
-    mounted () {
-      var self = this
-      this.$axios.get('/api/workorder/getAllOrder').then((res) => {
-        self.workorders = res.data
-      })
-      this.$axios.get('/api/miantenanceman/getAll').then((res) => {
-        self.masters = res.data
-        console.log(self.masters)
-      })
-    },
-    methods: {
-      commitMaster () {
-        this.$axios.post('/api/maintenanceman', this.master)
-        this.SdialogFormVisible = false
-        alert("添加成功")
-      },
-      openArrange (workorder) {
-        this.AdialogFormVisible = true
-        console.log(workorder)
-        this.newWorkorder = workorder
-      },
-      commitWorkorder () {
-        this.newWorkorder.stats = 6003
-        console.log(this.newWorkorder)
-        var i=this.newWorkorder
-        this.$axios.post('/api/workorder/update', i)
-        console.log(this.newWorkorder)
-        this.SdialogFormVisible = false
-        this.AdialogFormVisible = false
-      }
     }
-  }
 </script>
 
 <style scoped>
